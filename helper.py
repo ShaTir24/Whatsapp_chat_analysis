@@ -2,6 +2,8 @@ from urlextract import URLExtract
 import pandas as pd
 from collections import Counter
 import emoji
+from cleantext import clean
+import re
 
 
 def fetch_stats(selected_user, df):
@@ -66,7 +68,7 @@ def daily_timeline(selected_user, df):
 def weekly_analysis(selected_user, df):
     if selected_user != 'Overall':
         df = df[df['user'] == selected_user]
-    return df['day_num'].value_counts()
+    return df['day_name'].value_counts()
 
 
 def monthly_analysis(selected_user, df):
@@ -78,8 +80,15 @@ def monthly_analysis(selected_user, df):
 def periodic_heatmap(selected_user, df):
     if selected_user != 'Overall':
         df = df[df['user'] == selected_user]
-    user_map = df.pivot_table(index='day_num', columns='period', values='message', aggfunc='count').fillna(0)
+    user_map = df.pivot_table(index='day_name', columns='period', values='message', aggfunc='count').fillna(0)
     return user_map
+
+
+def remover_utility(input_string):
+    pattern = r'@\d+'
+    output_string = re.sub(pattern, '', input_string)
+    return output_string
+
 
 def most_common_words(selected_user, df):
     if selected_user != 'Overall':
@@ -91,6 +100,8 @@ def most_common_words(selected_user, df):
     stop_words = f.read()
     words = []
     for message in temp['message']:
+        message = clean(message, no_emoji=True)
+        message = remover_utility(message)
         for word in message.lower().split():
             if word not in stop_words:
                 words.append(word)
@@ -103,5 +114,5 @@ def most_common_emojis(selected_user, df):
         df = df[df['user'] == selected_user]
     emojis = []
     emojis.extend([match["emoji"] for message in df['message'] for match in emoji.emoji_list(message)])
-    emoji_df = pd.DataFrame(Counter(emojis).most_common(6))
+    emoji_df = pd.DataFrame(Counter(emojis).most_common(6)).rename(columns={0: 'Emoji', 1: "Count"})
     return emoji_df

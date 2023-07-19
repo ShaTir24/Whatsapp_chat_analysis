@@ -30,12 +30,12 @@ def preprocess(data):
     df['month_num'] = df['date'].dt.month
     df['day'] = df['date'].dt.day
     df['date_num'] = df['date'].dt.date
-    df['day_num'] = df['date'].dt.day_name()
+    df['day_name'] = df['date'].dt.day_name()
     df['hour'] = df['date'].dt.hour
     df['minute'] = df['date'].dt.minute
 
     period = []
-    for hour in df[['day_num', 'hour']]['hour']:
+    for hour in df[['day_name', 'hour']]['hour']:
         if hour == 23:
             period.append(str(hour) + "-" + str('00'))
         elif hour == 0:
