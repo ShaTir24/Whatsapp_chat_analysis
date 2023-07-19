@@ -6,7 +6,7 @@ import preprocessor
 
 st.sidebar.title("Whatsapp Chat Analyser")
 
-uploaded_file = st.sidebar.file_uploader("Choose a file")
+uploaded_file = st.sidebar.file_uploader("Choose a file.\nGo to Chat -> Menu (top right) -> more options -> Export Chat -> without media.\nUpload the chat file(.txt) here")
 if uploaded_file is not None:
     # To read file as bytes:
     bytes_data = uploaded_file.getvalue()
@@ -67,6 +67,7 @@ if uploaded_file is not None:
         daily_timeline = helper.daily_timeline(selected_user, df)
         fig, ax = plt.subplots()
         plt.figure(figsize=(18, 10))
+        plt.xticks(rotation='vertical')
         ax.plot(daily_timeline['date_num'], daily_timeline['message'], color='green')
         st.pyplot(fig)
 
@@ -112,7 +113,7 @@ if uploaded_file is not None:
             st.dataframe(most_emoji_df)
         with col2:
             fig, ax = plt.subplots()
-            ax.pie(most_emoji_df[1], labels=most_emoji_df[0], autopct="%0.2f%%", radius=1.5)
+            ax.pie(most_emoji_df[1],  autopct="%0.2f%%", radius=1.5)
             plt.pie([1], radius=0.75, colors='white')
             st.pyplot(fig)
         # fig, ax = plt.subplots()
