@@ -28,21 +28,21 @@ if uploaded_file is not None:
         col1, col2, col3, col4 = st.columns(4)
 
         with col1:
-            st.header("Total Messages")
+            st.header("Total\nMessages")
             st.title(num_messages)
         with col2:
-            st.header("Total Words")
+            st.header("Total\nWords")
             st.title(words)
         with col3:
-            st.header("Total Media")
+            st.header("Total\nMedia")
             st.title(num_media_messages)
         with col4:
-            st.header("Total Links")
+            st.header("Total\nLinks")
             st.title(links)
 
         # finding the busiest user in the chat
         if selected_user == 'Overall':
-            st.title("\nMost Active Users")
+            st.title("\n\nMost Active Users")
             x, new_df = helper.most_busy_users(df)
             fig, ax = plt.subplots()
 
@@ -55,7 +55,7 @@ if uploaded_file is not None:
                 st.dataframe(new_df)
 
         # monthly messages timeline
-        st.title("\nMonthly Messages Timeline")
+        st.title("\n\nMonthly Messages Timeline")
         timeline = helper.monthly_timeline(selected_user, df)
         fig, ax = plt.subplots()
         ax.plot(timeline['time'], timeline['message'], color='red')
@@ -63,16 +63,16 @@ if uploaded_file is not None:
         st.pyplot(fig)
 
         # daily messages timeline
-        st.title("\nDaily Messages Timeline")
+        st.title("\n\nDaily Messages Timeline")
         daily_timeline = helper.daily_timeline(selected_user, df)
         fig, ax = plt.subplots()
         plt.figure(figsize=(18, 10))
-        plt.xticks(rotation='vertical')
         ax.plot(daily_timeline['date_num'], daily_timeline['message'], color='green')
+        plt.xticks(rotation='vertical')
         st.pyplot(fig)
 
         # weekly analysis
-        st.title("\nMessage Trends Analysis")
+        st.title("\n\nMessage Trends Analysis")
         col1, col2 = st.columns(2)
         with col1:
             st.header("Weekdays Trend")
@@ -90,7 +90,7 @@ if uploaded_file is not None:
             st.pyplot(fig)
 
         # periodic heatmap
-        st.title("\nHourly Heatmap")
+        st.title("\n\nHourly Heatmap")
         heat_map = helper.periodic_heatmap(selected_user, df)
         fig, ax = plt.subplots()
         ax = sns.heatmap(heat_map)
@@ -98,7 +98,7 @@ if uploaded_file is not None:
 
         # most common 25 words
         most_common_df = helper.most_common_words(selected_user, df)
-        st.title('\n20 Most Used Words')
+        st.title('\n\n20 Most Used Words')
         fig, ax = plt.subplots()
         ax.barh(most_common_df[0], most_common_df[1])
         plt.xticks(rotation='vertical')
@@ -107,7 +107,7 @@ if uploaded_file is not None:
 
         # most common emojis
         most_emoji_df = helper.most_common_emojis(selected_user, df)
-        st.title("\nMost Used Emojis")
+        st.title("\n\nMost Used Emojis")
         col1, col2 = st.columns(2)
         with col1:
             st.dataframe(most_emoji_df)
@@ -120,7 +120,7 @@ if uploaded_file is not None:
         # ax.pie(most_emoji_df[0], most_emoji_df[1])
         # st.pyplot(fig)
 
-        st.title("\nThankyou for sharing your data. View your processed dataframe:")
+        st.title("\n\n\nThankyou for sharing your data. View your processed dataframe:")
         st.dataframe(df)
 
         st.text("\nMade by Tirth Shah 😉\n")
